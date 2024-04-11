@@ -1,10 +1,22 @@
 import { Button, Heading, MultiStep, Text } from "@carlos-hfc-ignite-ui/react"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, Check } from "lucide-react"
+import { useRouter } from "next/router"
+import { signIn, useSession } from "next-auth/react"
 
 import { Container, Header } from "../styles"
-import { ConnectBox, ConnectItem } from "./styles"
+import { AuthError, ConnectBox, ConnectItem } from "./styles"
 
 export default function ConnectCalendar() {
+  const session = useSession()
+  const router = useRouter()
+
+  const hasAuthError = !!router.query.error
+  const isSignedIn = session.status === "authenticated"
+
+  async function handleConnectCalendar() {
+    await signIn("google")
+  }
+
   return (
     <Container>
       <Header>
@@ -24,16 +36,34 @@ export default function ConnectCalendar() {
       <ConnectBox>
         <ConnectItem>
           <Text>Google Calendar</Text>
-          <Button
-            variant="secondary"
-            size="sm"
-          >
-            Conectar
-            <ArrowRight />
-          </Button>
+          {isSignedIn ? (
+            <Button
+              size="sm"
+              disabled
+            >
+              Conectado
+              <Check />
+            </Button>
+          ) : (
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={handleConnectCalendar}
+            >
+              Conectar
+              <ArrowRight />
+            </Button>
+          )}
         </ConnectItem>
 
-        <Button>
+        {hasAuthError && (
+          <AuthError size="sm">
+            Falha ao se conectar ao Google, verifique se você habilitou as
+            permissões de acesso ao Google Calendar.
+          </AuthError>
+        )}
+
+        <Button disabled={!isSignedIn}>
           Próximo passo
           <ArrowRight />
         </Button>

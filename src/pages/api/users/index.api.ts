@@ -32,15 +32,10 @@ export default async function handler(
     },
   })
 
-  setCookie(
-    { res: response },
-    `${process.env.NEXT_COOKIE_NAME_PREFIX}userId`,
-    user.id,
-    {
-      maxAge: 60 * 60 * 24 * 7, // 7d
-      path: "/",
-    },
-  )
+  setCookie({ res: response }, `${process.env.COOKIE_PREFIX}userId`, user.id, {
+    maxAge: 60 * 60 * 24 * 7, // 7d
+    path: "/",
+  })
 
   return response.status(201).json(user)
 }
