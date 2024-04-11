@@ -12,6 +12,8 @@
     "@carlos-hfc-ignite-ui/react": "^2.1.2",
     "@hookform/resolvers": "^3.3.4",
     "@ignite-ui/react": "^2.2.4",
+    "@prisma/client": "^5.12.1",
+    "axios": "^1.6.8",
     "lucide-react": "^0.367.0",
     "next": "14.1.4",
     "react": "^18",
@@ -27,6 +29,7 @@
     "eslint": "^8.57.0",
     "eslint-config-next": "^14.1.4",
     "eslint-plugin-simple-import-sort": "^12.0.0",
+    "prisma": "^5.12.1",
     "typescript": "^5.4.5"
   }
 }
