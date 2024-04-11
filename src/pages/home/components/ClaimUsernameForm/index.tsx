@@ -1,6 +1,7 @@
 import { Button, Text, TextInput } from "@carlos-hfc-ignite-ui/react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { ArrowRight } from "lucide-react"
+import { useRouter } from "next/router"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
@@ -24,12 +25,21 @@ export function ClaimUsernameForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<ClaimUsernameFormSchema>({
     resolver: zodResolver(claimUsernameFormSchema),
   })
 
-  async function handleClaimUsername(data: ClaimUsernameFormSchema) {}
+  const router = useRouter()
+
+  async function handleClaimUsername({ username }: ClaimUsernameFormSchema) {
+    await router.push({
+      pathname: "/register",
+      query: {
+        username,
+      },
+    })
+  }
 
   return (
     <>
@@ -46,6 +56,7 @@ export function ClaimUsernameForm() {
         <Button
           size="sm"
           type="submit"
+          disabled={isSubmitting}
         >
           Reservar
           <ArrowRight />

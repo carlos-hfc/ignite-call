@@ -7,6 +7,8 @@ import {
 } from "@carlos-hfc-ignite-ui/react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { ArrowRight } from "lucide-react"
+import { useRouter } from "next/router"
+import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
@@ -33,9 +35,18 @@ export default function Register() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
+    setValue,
   } = useForm<RegisterFormSchema>({
     resolver: zodResolver(registerFormSchema),
   })
+
+  const router = useRouter()
+
+  useEffect(() => {
+    if (router.query.username) {
+      setValue("username", String(router.query.username))
+    }
+  }, [router?.query?.username, setValue])
 
   async function handleRegister(data: RegisterFormSchema) {}
 
