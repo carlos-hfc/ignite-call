@@ -4,9 +4,11 @@
     "next/core-web-vitals"
   ],
   "plugins": [
-    "simple-import-sort"
+    "simple-import-sort",
+    "unused-imports"
   ],
   "rules": {
+    "unused-imports/no-unused-imports": "warn",
     "simple-import-sort/imports": "warn",
     "prettier/prettier": [
       "warn",
