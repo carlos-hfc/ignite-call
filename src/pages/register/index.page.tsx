@@ -6,11 +6,14 @@ import {
   TextInput,
 } from "@carlos-hfc-ignite-ui/react"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { isAxiosError } from "axios"
 import { ArrowRight } from "lucide-react"
 import { useRouter } from "next/router"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
+
+import { api } from "@/lib/axios"
 
 import { Container, Form, FormError, Header } from "./styles"
 
@@ -48,7 +51,18 @@ export default function Register() {
     }
   }, [router?.query?.username, setValue])
 
-  async function handleRegister(data: RegisterFormSchema) {}
+  async function handleRegister(data: RegisterFormSchema) {
+    try {
+      await api.post("/users", {
+        name: data.name,
+        username: data.username,
+      })
+    } catch (error) {
+      if (isAxiosError(error) && error.response?.data?.message) {
+        alert(error.response?.data?.message)
+      }
+    }
+  }
 
   return (
     <Container>
