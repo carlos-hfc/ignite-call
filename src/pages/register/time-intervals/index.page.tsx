@@ -11,6 +11,7 @@ import { ArrowRight } from "lucide-react"
 import { Controller, useFieldArray, useForm } from "react-hook-form"
 import { z } from "zod"
 
+import { api } from "@/lib/axios"
 import { convertTimeStringToMinutes } from "@/utils/convert-time-string-to-minutes"
 import { getWeekDays } from "@/utils/get-week-days"
 
@@ -43,7 +44,7 @@ const timeIntervalsFormSchema = z.object({
     .transform(intervals => {
       return intervals.map(item => {
         return {
-          weekDay: item.weekDay,
+          weekDay: item.weekDayIndex,
           startTimeInMinutes: convertTimeStringToMinutes(item.startTime),
           endTimeInMinutes: convertTimeStringToMinutes(item.endTime),
         }
@@ -93,8 +94,12 @@ export default function TimeIntervals() {
 
   const intervals = watch("intervals")
 
-  async function handleSetTimeIntervals(data: TimeIntervalsFormOutput) {
-    console.log(data)
+  async function handleSetTimeIntervals({
+    intervals,
+  }: TimeIntervalsFormOutput) {
+    await api.post("/users/time-intervals", {
+      intervals,
+    })
   }
 
   return (
