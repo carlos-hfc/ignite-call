@@ -1,6 +1,14 @@
-export function getWeekDays(lang: string = "pt-BR") {
+interface GetWeekDaysParams {
+  short?: Intl.DateTimeFormatOptions["weekday"]
+  lang?: string
+}
+
+export function getWeekDays({
+  short = "long",
+  lang = "pt-BR",
+}: GetWeekDaysParams = {}) {
   const weekdayFormatter = new Intl.DateTimeFormat(lang, {
-    weekday: "long",
+    weekday: short,
   })
   const daysOfWeek: string[] = []
 
