@@ -8,6 +8,7 @@ import {
 } from "@carlos-hfc-ignite-ui/react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { ArrowRight } from "lucide-react"
+import { useRouter } from "next/router"
 import { Controller, useFieldArray, useForm } from "react-hook-form"
 import { z } from "zod"
 
@@ -68,6 +69,8 @@ type TimeIntervalsFormOutput = z.output<typeof timeIntervalsFormSchema>
 export default function TimeIntervals() {
   const weekDays = getWeekDays()
 
+  const router = useRouter()
+
   const {
     control,
     register,
@@ -100,6 +103,8 @@ export default function TimeIntervals() {
     await api.post("/users/time-intervals", {
       intervals,
     })
+
+    await router.push("/register/update-profile")
   }
 
   return (
@@ -108,8 +113,8 @@ export default function TimeIntervals() {
         <Heading as="strong">Quase lá!</Heading>
 
         <Text>
-          Conecte o seu calendário para verificar automaticamente as horas
-          ocupadas e os novos eventos à medida em que são agendados.
+          Defina o intervalo de horários que você está disponível em cada dia da
+          semana.
         </Text>
 
         <MultiStep
