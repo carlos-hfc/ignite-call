@@ -25,6 +25,6 @@ function formatWeekday(date: Date, formatter: Intl.DateTimeFormat) {
   return formatter.format(date)
 }
 
-function capitalizeFirstLetter(value: string) {
+export function capitalizeFirstLetter(value: string) {
   return value.charAt(0).toUpperCase() + value.slice(1)
 }
