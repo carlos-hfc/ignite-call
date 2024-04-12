@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
@@ -13,7 +13,7 @@ model User {
   name      String
   email     String?  @unique
   avatarUrl String?
-  bio       String?
+  bio       String?  @db.Text
   createdAt DateTime @default(now())
 
   accounts      Account[]
@@ -30,12 +30,12 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-  refreshToken      String?
-  accessToken       String?
+  refreshToken      String? @db.Text
+  accessToken       String? @db.Text
   expiresAt         Int?
   tokenType         String?
   scope             String?
-  idToken           String?
+  idToken           String? @db.Text
   sessionState      String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
