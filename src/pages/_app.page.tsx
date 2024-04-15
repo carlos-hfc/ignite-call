@@ -27,7 +27,8 @@ export default function App({
             siteName: "Ignite Call",
             images: [
               {
-                url: "/favicon.svg",
+                url: "/favicon-512x512.png",
+                alt: "Ignite Call Logo",
               },
             ],
           }}

@@ -7,8 +7,21 @@ export default function Document() {
       <Head>
         <link
           rel="shortcut icon"
-          href="/favicon.svg"
-          type="image/svg+xml"
+          href="/favicon.ico"
+          type="image/x-icon"
+          sizes="48x48"
+        />
+        <link
+          rel="icon"
+          href="/favicon-32x32.png"
+          type="image/png"
+          sizes="32x32"
+        />
+        <link
+          rel="apple-touch-icon"
+          href="/apple-touch-icon.png"
+          type="image/png"
+          sizes="180x180"
         />
 
         <link
@@ -24,6 +37,31 @@ export default function Document() {
         <link
           href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
           rel="stylesheet"
+        />
+
+        <link
+          rel="manifest"
+          href="/site.webmanifest"
+        />
+        <meta
+          name="keywords"
+          content="Ignite Call,Typescript,React,Next.js,Google Calendar"
+        />
+        <meta
+          name="author"
+          content="Carlos Faustino"
+        />
+        <meta
+          name="creator"
+          content="Carlos Faustino"
+        />
+        <link
+          rel="author"
+          content="https://github.com/carlos-hfc"
+        />
+        <meta
+          name="category"
+          content="technology"
         />
 
         <style
