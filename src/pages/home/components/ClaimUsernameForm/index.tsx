@@ -5,6 +5,8 @@ import { useRouter } from "next/router"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
+import { api } from "@/lib/axios"
+
 import { Form, FormAnnotation } from "./styles"
 
 const claimUsernameFormSchema = z.object({
@@ -33,12 +35,20 @@ export function ClaimUsernameForm() {
   const router = useRouter()
 
   async function handleClaimUsername({ username }: ClaimUsernameFormSchema) {
-    await router.push({
-      pathname: "/register",
-      query: {
-        username,
-      },
-    })
+    try {
+      await api.get("/users/exists", {
+        params: { username },
+      })
+
+      await router.push("/register/connect-calendar")
+    } catch (error) {
+      await router.push({
+        pathname: "/register",
+        query: {
+          username,
+        },
+      })
+    }
   }
 
   return (

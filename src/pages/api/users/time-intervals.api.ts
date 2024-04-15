@@ -36,18 +36,16 @@ export default async function handler(
 
   const { intervals } = timeIntervalsBodySchema.parse(request.body)
 
-  await Promise.all(
-    intervals.map(interval => {
-      return prisma.userTimeInterval.create({
-        data: {
-          weekDay: interval.weekDay,
-          startTimeInMinutes: interval.startTimeInMinutes,
-          endTimeInMinutes: interval.endTimeInMinutes,
-          userId: session.user.id,
-        },
-      })
+  await prisma.userTimeInterval.createMany({
+    data: intervals.map(interval => {
+      return {
+        weekDay: interval.weekDay,
+        startTimeInMinutes: interval.startTimeInMinutes,
+        endTimeInMinutes: interval.endTimeInMinutes,
+        userId: session.user.id,
+      }
     }),
-  )
+  })
 
   return response.status(201).end()
 }
