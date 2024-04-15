@@ -10,7 +10,6 @@ export function PrismaAdapter(
 ): Adapter {
   return {
     async createUser(user) {
-      console.log(user)
       const cookies = parseCookies({ req: request })
 
       const userIdOnCookies = cookies[`${process.env.COOKIE_PREFIX}userId`]

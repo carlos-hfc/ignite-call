@@ -130,14 +130,16 @@ export function ConfirmStep({
       </FormActions>
 
       <ToastProvider>
-        <Toast
-          description={dayjs(schedulingDate).format(
-            "dddd, DD [de] MMMM [às] HH[h]",
-          )}
-          title="Agendamento realizado!"
-          open={isOpenScheduleConfirmed}
-          onOpenChange={setIsOpenScheduleConfirmed}
-        />
+        <div id="toast">
+          <Toast
+            description={dayjs(schedulingDate).format(
+              "dddd, DD [de] MMMM [às] HH[h]",
+            )}
+            title="Agendamento realizado!"
+            open={isOpenScheduleConfirmed}
+            onOpenChange={setIsOpenScheduleConfirmed}
+          />
+        </div>
       </ToastProvider>
     </ConfirmForm>
   )

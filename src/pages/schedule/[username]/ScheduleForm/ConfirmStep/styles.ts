@@ -12,6 +12,16 @@ export const ConfirmForm = styled(Box, {
     flexDirection: "column",
     gap: "$2",
   },
+
+  "@media (max-width: 420px)": {
+    "#toast": {
+      ol: {
+        left: "$3",
+        right: "$3",
+        width: "auto",
+      },
+    },
+  },
 })
 
 export const FormHeader = styled("div", {
