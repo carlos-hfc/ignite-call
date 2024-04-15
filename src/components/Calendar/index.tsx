@@ -1,3 +1,4 @@
+import { Tooltip, TooltipProvider } from "@carlos-hfc-ignite-ui/react"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import { ChevronLeft, ChevronRight } from "lucide-react"
@@ -178,12 +179,21 @@ export function Calendar({ onDateSelected, selectedDate }: CalendarProps) {
             <tr key={week}>
               {days.map(day => (
                 <td key={day.date.toString()}>
-                  <CalendarDay
-                    disabled={day.disabled}
-                    onClick={() => onDateSelected(day.date.toDate())}
-                  >
-                    {day.date.get("date")}
-                  </CalendarDay>
+                  <TooltipProvider>
+                    <Tooltip
+                      trigger={
+                        <CalendarDay
+                          disabled={day.disabled}
+                          onClick={() => onDateSelected(day.date.toDate())}
+                        >
+                          {day.date.get("date")}
+                        </CalendarDay>
+                      }
+                    >
+                      {day.date.format("DD [de] MMMM")} -{" "}
+                      {day.disabled ? "Indisponível" : "Disponível"}
+                    </Tooltip>
+                  </TooltipProvider>
                 </td>
               ))}
             </tr>

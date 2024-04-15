@@ -1,8 +1,16 @@
-import { Button, Text, Textarea, TextInput } from "@carlos-hfc-ignite-ui/react"
+import {
+  Button,
+  Text,
+  Textarea,
+  TextInput,
+  Toast,
+  ToastProvider,
+} from "@carlos-hfc-ignite-ui/react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import dayjs from "dayjs"
 import { Calendar, Clock } from "lucide-react"
 import { useRouter } from "next/router"
+import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
@@ -29,10 +37,12 @@ export function ConfirmStep({
   schedulingDate,
   onCancelConfirmation,
 }: ConfirmStepProps) {
+  const [isOpenScheduleConfirmed, setIsOpenScheduleConfirmed] = useState(false)
+
   const {
     register,
     handleSubmit,
-    formState: { isSubmitting, errors },
+    formState: { isSubmitting, isSubmitted, errors },
   } = useForm<ConfirmFormSchema>({
     resolver: zodResolver(confirmFormSchema),
   })
@@ -45,6 +55,8 @@ export function ConfirmStep({
     email,
     observations,
   }: ConfirmFormSchema) {
+    setIsOpenScheduleConfirmed(true)
+
     await api.post(`/users/${username}/schedule`, {
       name,
       email,
@@ -52,7 +64,7 @@ export function ConfirmStep({
       date: schedulingDate,
     })
 
-    onCancelConfirmation()
+    setTimeout(onCancelConfirmation, 4000)
   }
 
   const describedDate = dayjs(schedulingDate).format("DD [de] MMMM [de] YYYY")
@@ -111,11 +123,22 @@ export function ConfirmStep({
         </Button>
         <Button
           type="submit"
-          disabled={isSubmitting}
+          disabled={isSubmitting || isSubmitted}
         >
           Confirmar
         </Button>
       </FormActions>
+
+      <ToastProvider>
+        <Toast
+          description={dayjs(schedulingDate).format(
+            "dddd, DD [de] MMMM [às] HH[h]",
+          )}
+          title="Agendamento realizado!"
+          open={isOpenScheduleConfirmed}
+          onOpenChange={setIsOpenScheduleConfirmed}
+        />
+      </ToastProvider>
     </ConfirmForm>
   )
 }
