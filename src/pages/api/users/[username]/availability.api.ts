@@ -1,7 +1,10 @@
 import dayjs from "dayjs"
+import utc from "dayjs/plugin/utc"
 import { NextApiRequest, NextApiResponse } from "next"
 
 import { prisma } from "@/lib/prisma"
+
+dayjs.extend(utc)
 
 export default async function handler(
   request: NextApiRequest,
@@ -12,9 +15,9 @@ export default async function handler(
   }
 
   const username = String(request.query.username)
-  const { date } = request.query
+  const { date, timezoneOffset } = request.query
 
-  if (!date) {
+  if (!date || !timezoneOffset) {
     return response.status(400).json({
       message: "Date not provided.",
     })
@@ -34,6 +37,10 @@ export default async function handler(
 
   const referenceDate = dayjs(String(date))
   const isPastDate = referenceDate.endOf("day").isBefore(new Date())
+
+  const timezoneOffsetInHours = Number(timezoneOffset) / 60
+  const referenceDateTimezoneOffsetInHours =
+    referenceDate.toDate().getTimezoneOffset() / 60
 
   if (isPastDate) {
     return response.json({
@@ -71,8 +78,14 @@ export default async function handler(
     where: {
       userId: user.id,
       date: {
-        gte: referenceDate.set("hour", startHour).toDate(),
-        lte: referenceDate.set("hour", endHour).toDate(),
+        gte: referenceDate
+          .set("hour", startHour)
+          .add(timezoneOffsetInHours, "hours")
+          .toDate(),
+        lte: referenceDate
+          .set("hour", endHour)
+          .add(timezoneOffsetInHours, "hours")
+          .toDate(),
       },
     },
     select: {
@@ -82,10 +95,13 @@ export default async function handler(
 
   const availableTimes = possibleTimes.filter(time => {
     const isTimeBlocked = blockedTimes.some(
-      block => block.date.getHours() === time,
+      block => block.date.getUTCHours() - timezoneOffsetInHours === time,
     )
 
-    const isTimeInPast = referenceDate.set("hour", time).isBefore(new Date())
+    const isTimeInPast = referenceDate
+      .set("hour", time)
+      .subtract(referenceDateTimezoneOffsetInHours, "hours")
+      .isBefore(dayjs().utc().subtract(timezoneOffsetInHours, "hours"))
 
     return !isTimeBlocked && !isTimeInPast
   })

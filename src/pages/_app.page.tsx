@@ -25,6 +25,11 @@ export default function App({
             locale: "pt_BR",
             url: process.env.NEXT_PUBLIC_URL,
             siteName: "Ignite Call",
+            images: [
+              {
+                url: "/favicon.svg",
+              },
+            ],
           }}
         />
 
